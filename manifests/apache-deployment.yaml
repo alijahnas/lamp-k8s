@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lamp-apache
+  namespace: lamp-k8s
+  labels:
+    app: lamp-apache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lamp-apache
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: lamp-apache
+        tier: frontend
+    spec:
+      containers:
+      - image: bitnami/apache:2.4
+        name: lamp-apache
+        ports:
+        - containerPort: 8080
+          name: lamp-apache
+        volumeMounts:
+        - name: lamp-apache-conf
+          mountPath: /vhosts/
+          readOnly: true
+      volumes:
+      - name: lamp-apache-conf
+        configMap:
+          name: apache-conf

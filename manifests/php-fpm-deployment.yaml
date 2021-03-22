@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lamp-php-fpm
+  namespace: lamp-k8s
+  labels:
+    app: lamp-php-fpm
+spec:
+  selector:
+    matchLabels:
+      app: lamp-php-fpm
+      tier: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: lamp-php-fpm
+        tier: backend
+    spec:
+      containers:
+      - image: bitnami/php-fpm:8.0
+        name: lamp-php-fpm
+        env:
+        - name: LAMP_K8S_DB_HOST
+          value: lamp-k8s-mysql
+        - name: LAMP_K8S_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        ports:
+        - containerPort: 9000
+          name: lamp-php-fpm
+        volumeMounts:
+        - name: lamp-php-fpm-webpage
+          mountPath: /app/
+      volumes:
+      - name: lamp-php-fpm-webpage
+        configMap:
+          name: php-fpm-webpage
