@@ -19,7 +19,8 @@ spec:
         tier: backend
     spec:
       containers:
-      - image: bitnami/php-fpm:8.0
+      - image: alisanhajilog/lamp-k8s-php:v1
+        imagePullPolicy: Always
         name: lamp-php-fpm
         env:
         - name: LAMP_K8S_DB_HOST
@@ -32,10 +33,3 @@ spec:
         ports:
         - containerPort: 9000
           name: lamp-php-fpm
-        volumeMounts:
-        - name: lamp-php-fpm-webpage
-          mountPath: /app/
-      volumes:
-      - name: lamp-php-fpm-webpage
-        configMap:
-          name: php-fpm-webpage

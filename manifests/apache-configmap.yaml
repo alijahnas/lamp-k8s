@@ -13,6 +13,6 @@ data:
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
-        DirectoryIndex index.php
+        DirectoryIndex poc.php
       </Directory>
     </VirtualHost>

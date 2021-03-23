@@ -11,4 +11,3 @@ spec:
   selector:
     app: lamp-k8s
     tier: mysql
-  clusterIP: None

@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql-content-write
+  namespace: lamp-k8s
+  labels:
+    app: lamp-k8s
+spec:
+  containers:
+  - name: wait-for-mysql-svc
+    image: mysql:5.6
+    command: ['sh', '-c', "until mysql -h$LAMP_K8S_DB_HOST -p$LAMP_K8S_DB_PASSWORD < /tmp/testndc.sql; do echo waiting for mysql service; sleep 1; done"]
+    env:
+      - name: LAMP_K8S_DB_HOST
+        value: lamp-k8s-mysql
+      - name: LAMP_K8S_DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: mysql-pass
+            key: password 
+    volumeMounts:
+      - name: mysql-content-file
+        mountPath: /tmp
+        readOnly: true
+  restartPolicy: Never
+  volumes:
+    - name: mysql-content-file
+      configMap:
+        name: mysql-content

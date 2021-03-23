@@ -17,3 +17,8 @@ We have a deployment of PHP-FPM. Number of instances is configurable through dep
 We have a deployment of Apache webserver using FastCGI to connect to the PHP-FPM service. Number of instances is configurable through deployment replicas.
 
 We have a deployment of a single MySQL database, with a persistent volume to store the DB.
+
+To access the application, use to get the external IP:
+```
+kubectl get svc lamp-apache -n lamp-k8s
+```
