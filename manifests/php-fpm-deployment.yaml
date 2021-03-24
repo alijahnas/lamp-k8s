@@ -6,6 +6,7 @@ metadata:
   labels:
     app: lamp-php-fpm
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: lamp-php-fpm
